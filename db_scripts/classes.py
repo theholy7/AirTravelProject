@@ -47,7 +47,7 @@ class Airport(object):
         self.tz = kwargs.get('tz');
 
     def addToTable(self, cursor):
-        print("INSERT INTO airports (airport_id, name, city, country, IATA, ICAO, latitude, longitude, altitude, timezone, dst, tz) VALUES "
+        """print("INSERT INTO airports (airport_id, name, city, country, IATA, ICAO, latitude, longitude, altitude, timezone, dst, tz) VALUES "
             "('{}', '{}', '{}', '{}', '{}', '{}', {}, {}, {}, {}, '{}', '{}');".format(
                 self.airportID,
                 self.name,
@@ -61,7 +61,7 @@ class Airport(object):
                 self.timezone,
                 self.DST,
                 self.tz
-                ))
+                ))"""
 
         cursor.execute("INSERT INTO airports (airport_id, name, city, country, IATA, ICAO, latitude, longitude, altitude, timezone, dst, tz) VALUES "
             "( ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);", (
@@ -114,6 +114,36 @@ class Airline(object):
         self.country = kwargs.get('country');
         self.active = kwargs.get('active');
 
+    def addToTable(self, cursor):
+        """print("INSERT INTO airports (airport_id, name, city, country, IATA, ICAO, latitude, longitude, altitude, timezone, dst, tz) VALUES "
+            "('{}', '{}', '{}', '{}', '{}', '{}', {}, {}, {}, {}, '{}', '{}');".format(
+                self.airportID,
+                self.name,
+                self.city,
+                self.country,
+                self.IATA,
+                self.ICAO,
+                self.latitude,
+                self.longitude,
+                self.altitude,
+                self.timezone,
+                self.DST,
+                self.tz
+                ))"""
+
+        cursor.execute("INSERT INTO airlines (airline_id, name, alias, IATA, ICAO, callsign, country, active) VALUES "
+            "( ?, ?, ?, ?, ?, ?, ?, ?);", (
+                self.airlineID,
+                self.name,
+                self.alias,
+                self.IATA,
+                self.ICAO,
+                self.callsign,
+                self.country,
+                self.active
+                )
+            )
+
 
 
     @staticmethod
@@ -150,8 +180,40 @@ class Route(object):
         self.stops = kwargs.get('stops');
         self.equipment = kwargs.get('equipment');
 
+    def addToTable(self, cursor):
+        """print("INSERT INTO airports (airport_id, name, city, country, IATA, ICAO, latitude, longitude, altitude, timezone, dst, tz) VALUES "
+            "('{}', '{}', '{}', '{}', '{}', '{}', {}, {}, {}, {}, '{}', '{}');".format(
+                self.airportID,
+                self.name,
+                self.city,
+                self.country,
+                self.IATA,
+                self.ICAO,
+                self.latitude,
+                self.longitude,
+                self.altitude,
+                self.timezone,
+                self.DST,
+                self.tz
+                ))"""
+
+        cursor.execute("INSERT INTO routes (airline, airline_id, source, source_id,"
+            " destination, destination_id, codeshare, stops, equipment) VALUES "
+            "( ?, ?, ?, ?, ?, ?, ?, ?, ?);", (
+                self.airline,
+                self.airlineID,
+                self.source,
+                self.sourceID,
+                self.destination,
+                self.destinationID,
+                self.codeshare,
+                self.stops,
+                self.equipment
+                )
+            )
+
     @staticmethod
-    def csvToDict(*rgs):
+    def csvToDict(args):
         routeDict = dict(zip(['airline', 'airlineID', 'source', \
         'sourceID', 'destination', 'destinationID', \
         'codeshare', 'stops', 'equipment'], args))
