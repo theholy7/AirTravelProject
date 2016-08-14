@@ -32,7 +32,7 @@ import math
 #     return Math.sqrt(distance);
 # }
 
-def calulate_distance (source_lat, source_lon, source_alt, destination_lat, destination_lon, destination_alt):
+def calculate_distance (source_lat, source_lon, source_alt, destination_lat, destination_lon, destination_alt):
     
     earth_radius = 6731 #earth radius
 

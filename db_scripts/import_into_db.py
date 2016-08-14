@@ -23,7 +23,7 @@ def main():
         try:
                 #criar table dos airports
             c.execute("CREATE TABLE airports (airport_id INTEGER PRIMARY KEY, name TEXT, city TEXT, country TEXT, IATA TEXT, "
-                "ICAO TEXT, latitude REAL, longitude, REAL, altitude REAL, timezone REAL, dst TEXT, tz TEXT);");
+                "ICAO TEXT, latitude REAL, longitude REAL, altitude REAL, timezone REAL, dst TEXT, tz TEXT);");
 
             # ler o csv
             with open('../data/airports.dat.txt', 'r') as csvfile:
@@ -81,7 +81,7 @@ def main():
                 
                 #print(row)
                 routesDict = Route.csvToDict(row)
-                pprint(routesDict)
+                #pprint(routesDict)
                 
                 #pprint(airportDict)
                 route = Route(**routesDict)
