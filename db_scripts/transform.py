@@ -33,7 +33,7 @@ import math
 # }
 
 def calculate_distance (source_lat, source_lon, source_alt, destination_lat, destination_lon, destination_alt):
-    
+
     earth_radius = 6731 #earth radius
 
     lat_distance = math.radians(destination_lat - source_lat)
@@ -82,6 +82,48 @@ def main():
     except sqlite3.OperationalError as e:
         print("Couldn't connect to database: {}".format(e.args[0]))
 
+    # print("Trying to connect to database...")
+    #
+    # conn = sqlite3.connect(r"../database/openflight.db")
+    #
+    # c = conn.cursor()
+    #
+    # print("Connection established!")
+
+    #c.execute("ALTER TABLE results ADD COLUMN distance REAL");
+
+    c.execute("CREATE TABLE finalresults ("
+              "route_id integer PRIMARY KEY NOT NULL,"
+              "airline TEXT, stops INTEGER, equipment TEXT, "
+              "sourceid INTEGER, sourcename TEXT, sourcecity TEXT, sourcecountry TEXT, sourcelatitude REAL, sourcelongitude REAL, sourcealtitude REAL,"
+              "finalid INTEGER, finalname TEXT, finalcity TEXT, finalcountry TEXT, finallatitude REAL, finallongitude REAL, finalaltitude REAL,"
+              "distance REAL)")
+
+    c.execute("SELECT * FROM results")
+
+    allrows = c.fetchall()
+
+    i=1
+    for row in allrows:
+        print(row)
+
+        print(calculate_distance(row[7], row[8], row[9], row[14], row[15], row[16]))
+        c.execute("INSERT INTO finalresults ("
+                  "route_id,"
+                  "airline, stops, equipment, "
+                  "sourceid, sourcename, sourcecity, sourcecountry, sourcelatitude, sourcelongitude, sourcealtitude,"
+                  "finalid, finalname, finalcity, finalcountry, finallatitude, finallongitude, finalaltitude,"
+                  "distance)"
+                  "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                  (i, row[0], row[1], row[2], row[3], row[4], row[5], row[6], row[7],
+                  row[8], row[9], row[10], row[11], row[12], row[13], row[14], row[15],
+                  row[16], calculate_distance(row[7], row[8], row[9], row[14], row[15], row[16])))
+        i = i+1;
+
+        # a = input("next?")
+        # if a == "q":
+        #     break
+    conn.commit()
 
 
 
